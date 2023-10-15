@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import AppNavigator from './src/infraestructure/navigation/AppNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
+import { Text } from 'react-native'
+import { useEffect, useState } from 'react';
+import { FONTS_RENDER } from './src/infraestructure/utils/fonts';
+
+const fetchFonts = () =>
+  Font.loadAsync(FONTS_RENDER);
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFonts().then(() => {
+      setIsLoading(false)
+    });
+  }, [])
+  
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+    {
+      isLoading ?
+      <Text>Loading...</Text>
+      :
+      <NavigationContainer>
+          <AppNavigator />
+      </NavigationContainer>
+    }
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
